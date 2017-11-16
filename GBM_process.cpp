@@ -1,0 +1,40 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//	GBM_process.cpp
+//  By : 1222781
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+#include "GBM_process.h"
+
+#include "Input.h"
+#include "rv_library.h"
+
+#include <cmath>
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//	constructor
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+GBM_process::GBM_process(const Input & inp)
+:   S_0_(inp.GetS0())
+,   sig_(inp.Getsig())
+,   r_(inp.Getr())
+{
+    
+    double T = inp.GetT();
+    
+    mu_T_ = std::log(S_0_) + (r_ - 0.5*sig_*sig_)*T;
+    sig_T_ = sig_*std::sqrt(T);
+}
+                
+
+double GBM_process::Next_S() const
+{
+    double z = rv::GetNormalVariate();
+    return std::exp(mu_T_ + sig_T_*z);
+}
+
+
+ 
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//	end
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
